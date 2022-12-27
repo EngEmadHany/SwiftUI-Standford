@@ -12,10 +12,12 @@ struct ContentView: View {
     @State var emojiCount = 4
     var body: some View{
         VStack{
-            LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]){
-                
-                ForEach( emojis[0...emojiCount], id: \.self) { emoji in
-                    CardView(content: emoji, isFaceUP: true)
+            ScrollView{
+                LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]){
+                    ForEach( emojis[0...emojiCount], id: \.self) { emoji in
+                        CardView(content: emoji, isFaceUP: true)
+                            .aspectRatio(2/3, contentMode: .fit)
+                    }
                 }
             }.padding(.horizontal)
                 .foregroundColor(.red)
@@ -93,6 +95,6 @@ struct CardView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .preferredColorScheme(.light)
+            .preferredColorScheme(.dark)
     }
 }
