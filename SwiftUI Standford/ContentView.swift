@@ -8,16 +8,49 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    var emojis = ["👩‍🚀", "👩‍🌾", "👨‍🚒", "🦸‍♀️", "🎅" , "🦊", "🐶", "🐴", "🐏", "🐇", "🐔", "🐱","🐤", "🦄", "🦋", "🦖", "🦏", "🐐", "🐩", "🌵", "🪵", "🐉", "🐲", "🐢"]
+    @State var emojiCount = 4
     var body: some View{
-        HStack{
-            CardView(isFaceUP: true)
-            CardView(isFaceUP: false)
-            CardView(isFaceUP: true)
-            CardView(isFaceUP: false)
-            
-        }.padding(.horizontal)
-         .foregroundColor(.red)
+        VStack{
+            LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]){
+                
+                ForEach( emojis[0...emojiCount], id: \.self) { emoji in
+                    CardView(content: emoji, isFaceUP: true)
+                }
+            }.padding(.horizontal)
+                .foregroundColor(.red)
+            Spacer()
+            HStack{
+                
+                remove
+                Spacer()
+                add
+                
+            }.padding(.horizontal)
+        }
+    }
+    
+    
+    var remove:  some View{
+        Button {
+            if emojiCount > 0 {
+                emojiCount -= 1
+            }
+        } label: {
+            Image(systemName: "minus.circle")
+                .font(.largeTitle)
+        }
+    }
+    
+    var add: some View{
+        Button {
+            if emojiCount < emojis.count - 1{
+                emojiCount += 1
+            }
+        } label: {
+            Image(systemName: "plus.circle")
+                .font(.largeTitle)
+        }
     }
 }
 
@@ -26,11 +59,12 @@ struct ContentView: View {
 
 
 struct CardView: View {
-    var isFaceUP: Bool = true
+    var content: String
+    @State var isFaceUP: Bool = true
     
     var body: some View {
         ZStack{
-            var shape = RoundedRectangle(cornerRadius: 20)
+            let shape = RoundedRectangle(cornerRadius: 20)
             if isFaceUP {
                 shape
                     .fill()
@@ -38,13 +72,16 @@ struct CardView: View {
                 shape
                     .stroke(lineWidth: 3)
                 
-                Text("✈️")
+                Text(content)
                     .font(.largeTitle)
             } else {
                 shape
                     .fill()
                     .foregroundColor(.orange)
             }
+        }
+        .onTapGesture {
+            isFaceUP.toggle()
         }
     }
 }
