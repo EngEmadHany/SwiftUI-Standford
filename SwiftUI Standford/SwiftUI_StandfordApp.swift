@@ -11,7 +11,7 @@ import SwiftUI
 struct SwiftUI_StandfordApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Assignment_1()
         }
     }
 }
