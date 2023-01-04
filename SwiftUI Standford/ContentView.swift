@@ -9,27 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     var emojis = ["👩‍🚀", "👩‍🌾", "👨‍🚒", "🦸‍♀️", "🎅" , "🦊", "🐶", "🐴", "🐏", "🐇", "🐔", "🐱","🐤", "🦄", "🦋", "🦖", "🦏", "🐐", "🐩", "🌵", "🪵", "🐉", "🐲", "🐢"]
-    @State var emojiCount = 4
+    @State var emojiCount = 19
+    
     var body: some View{
         VStack{
             ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]){
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]){
                     ForEach( emojis[0...emojiCount], id: \.self) { emoji in
                         CardView(content: emoji, isFaceUP: true)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
                 }
-            }.padding(.horizontal)
-                .foregroundColor(.red)
+            }.foregroundColor(.red)
             Spacer()
-            HStack{
-                
-                remove
-                Spacer()
-                add
-                
-            }.padding(.horizontal)
-        }
+      
+        }.padding(.horizontal)
     }
     
     
