@@ -13,18 +13,18 @@ struct MemoryGame<CardContent>{
      
     
    mutating func choose(_ card: Card){
-        let chosenIndex = index(of: card)
-        cards[chosenIndex].isFaceUP.toggle()
+       if let chosenIndex = index(of: card){
+           cards[chosenIndex].isFaceUP.toggle()
+       }
     }
     
-    func index(of: Card) -> Int{
+    func index(of: Card) -> Int?{
         for index in 0..<cards.count{
             if cards[index].id == of.id{
                 return index
             }
         }
-        
-        return 0
+        return nil
     }
     
     
