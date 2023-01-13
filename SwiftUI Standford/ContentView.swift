@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["👩‍🚀", "👩‍🌾", "👨‍🚒", "🦸‍♀️", "🎅" , "🦊", "🐶", "🐴", "🐏", "🐇", "🐔", "🐱","🐤", "🦄", "🦋", "🦖", "🦏", "🐐", "🐩", "🌵", "🪵", "🐉", "🐲", "🐢"]
-    @State var emojiCount = 19
     
+    var viewModel: EmojiMemoryGame
+    // Update UI from Model 
     var body: some View{
         VStack{
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]){
-                    ForEach( emojis[0...emojiCount], id: \.self) { emoji in
+                    ForEach(viewModel.cards, id: \.self) { emoji in
                         CardView(content: emoji, isFaceUP: true)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -56,7 +56,7 @@ struct ContentView: View {
 
 struct CardView: View {
     var content: String
-    @State var isFaceUP: Bool = true
+  
     
     
     var body: some View {
@@ -78,9 +78,7 @@ struct CardView: View {
                     .foregroundColor(.orange)
             }
         }
-        .onTapGesture {
-            isFaceUP.toggle()
-        }
+       
     }
 }
 
@@ -89,8 +87,10 @@ struct CardView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
     }
 }

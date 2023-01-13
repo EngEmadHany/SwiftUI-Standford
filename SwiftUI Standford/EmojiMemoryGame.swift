@@ -18,10 +18,15 @@ class EmojiMemoryGame{
     // private(set)can be shown without editing
     // also private model protect it fromm any Views trying to reaching in
     // and trying to change things
-    private var model: MemoryGame<String> =
-    MemoryGame<String>(numberOfPairesOfCards: 4) { pairIndex in
-            emojis[pairIndex]
+    
+   static func createMemoryGame() -> MemoryGame<String> {
+        MemoryGame<String>(numberOfPairesOfCards: 4) { pairIndex in
+                emojis[pairIndex]
+        }
     }
+     
+    private var model: MemoryGame<String> = createMemoryGame()
+    
     
     
     var cards: Array<MemoryGame<String>.Card> {
