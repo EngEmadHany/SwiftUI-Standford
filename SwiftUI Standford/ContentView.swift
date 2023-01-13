@@ -8,82 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel: EmojiMemoryGame
     
-    var viewModel: EmojiMemoryGame
-    // Update UI from Model 
+    // Update UI from Model
     var body: some View{
-        VStack{
-            ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]){
-                    ForEach(viewModel.cards, id: \.self) { emoji in
-                        CardView(content: emoji, isFaceUP: true)
-                            .aspectRatio(2/3, contentMode: .fit)
-                    }
+        
+        ScrollView{
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]){
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            viewModel.choose(card)
+                        }
                 }
-            }.foregroundColor(.red)
-            Spacer()
-      
-        }.padding(.horizontal)
-    }
-    
-    
-    var remove:  some View{
-        Button {
-            if emojiCount > 0 {
-                emojiCount -= 1
             }
-        } label: {
-            Image(systemName: "minus.circle")
-                .font(.largeTitle)
-        }
-    }
-    
-    var add: some View{
-        Button {
-            if emojiCount < emojis.count - 1{
-                emojiCount += 1
-            }
-        } label: {
-            Image(systemName: "plus.circle")
-                .font(.largeTitle)
-        }
+        }.foregroundColor(.red)
+         .padding(.horizontal)
+        Spacer()
+        
+           
     }
 }
-
-
 
 
 
 struct CardView: View {
-    var content: String
-  
-    
+    let card: MemoryGame<String>.Card
     
     var body: some View {
-        
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 20)
-            if isFaceUP {
-                shape
-                    .fill()
-                    .foregroundColor(.white)
-                shape
-                    .strokeBorder(lineWidth: 3)
-                
-                Text(content)
-                    .font(.largeTitle)
+            if card.isFaceUP {
+                shape.fill().foregroundColor(.white)
+                shape.strokeBorder(lineWidth: 3)
+                Text(card.content).font(.largeTitle)
             } else {
-                shape
-                    .fill()
-                    .foregroundColor(.orange)
+                shape.fill().foregroundColor(.orange)
             }
         }
-       
+        
     }
 }
-
-
-
 
 
 struct ContentView_Previews: PreviewProvider {

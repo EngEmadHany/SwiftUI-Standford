@@ -12,7 +12,7 @@ func makeCardContent(index: Int) -> String{
 }
 
 // sometimes viewmodel create it's own model
-class EmojiMemoryGame{
+class EmojiMemoryGame : ObservableObject{
      static let emojis = ["👩‍🚀", "👩‍🌾", "👨‍🚒", "🦸‍♀️", "🎅" , "🦊", "🐶", "🐴", "🐏", "🐇", "🐔", "🐱","🐤", "🦄", "🦋", "🦖", "🦏", "🐐", "🐩", "🌵", "🪵", "🐉", "🐲", "🐢"]
     
     // private(set)can be shown without editing
@@ -25,11 +25,17 @@ class EmojiMemoryGame{
         }
     }
      
-    private var model: MemoryGame<String> = createMemoryGame()
+   @Published private var model: MemoryGame<String> = createMemoryGame()
     
     
-    
+    //to prevent anyone from changes the model from outside ViewModel
+    //ReadOnly
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
     }
+    
+    func choose(_ card: MemoryGame<String>.Card){
+        model.choose(card)
+    }
+    
 }
