@@ -11,7 +11,31 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
    private(set) var cards: Array<Card>
      
-    private var indexOfTheOneAndOnlyFaceUpCard: Int?
+    private var indexOfTheOneAndOnlyFaceUpCard: Int?{
+        get {
+            var faceUpCardIndeces = [Int]()
+            
+            for index in cards.indices{
+                if cards[index].isFaceUP == true{
+                    faceUpCardIndeces.append(index)
+                }
+            }
+            if faceUpCardIndeces.count == 1{
+                return faceUpCardIndeces.first
+            }else{
+                return nil
+            }
+        }
+        set {
+            for index in cards.indices{
+                if index != newValue {
+                    cards[index].isFaceUP = false
+                } else{
+                    cards[index].isFaceUP = true
+                }
+            }
+        }
+    }
     
    mutating func choose(_ card: Card){
        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id }),
@@ -20,21 +44,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
        {
         print("checkpoint 1")
            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
-               print("checkpoint 2 \(potentialMatchIndex)")
+               
                if cards[chosenIndex].content == cards[potentialMatchIndex].content {
-                   print("checkpoint 3")
+                   
                    cards[chosenIndex].isMatched = true
                    cards[potentialMatchIndex].isMatched = true
                }
-               print("checkpoint 4")
-               indexOfTheOneAndOnlyFaceUpCard = nil
+               cards[chosenIndex].isFaceUP = true
            } else {
-               print("checkpoint 5")
-               for index in cards.indices{
-                   cards[index].isFaceUP = false
-               }
-               indexOfTheOneAndOnlyFaceUpCard = chosenIndex
-               print("indexofthe one and only one\(indexOfTheOneAndOnlyFaceUpCard)")
+               
+               
+               
+               
            }
            cards[chosenIndex].isFaceUP.toggle()
        }
@@ -42,7 +63,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     
     init(numberOfPairesOfCards: Int, createCardContent: (Int) -> CardContent){
-        cards = Array<Card>()
+        cards = []
         
         for pairIndex in 0..<numberOfPairesOfCards {
             let cardContent = createCardContent(pairIndex)
