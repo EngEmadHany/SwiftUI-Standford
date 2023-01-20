@@ -13,13 +13,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
      
     private var indexOfTheOneAndOnlyFaceUpCard: Int?{
         get {
-            var faceUpCardIndeces = [Int]()
+            let faceUpCardIndices = cards.indices.filter({ index in cards[index].isFaceUP })
             
-            for index in cards.indices{
-                if cards[index].isFaceUP == true{
-                    faceUpCardIndeces.append(index)
-                }
-            }
             if faceUpCardIndeces.count == 1{
                 return faceUpCardIndeces.first
             }else{
