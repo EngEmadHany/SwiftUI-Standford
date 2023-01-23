@@ -12,25 +12,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
    private(set) var cards: Array<Card>
      
     private var indexOfTheOneAndOnlyFaceUpCard: Int?{
-        get {// build up an array that has all the faceUp Card indecies in it
-            let faceUpCardIndices = cards.indices.filter({ index in cards[index].isFaceUP })
-            
-            if faceUpCardIndices.count == 1{
-                return faceUpCardIndices.first
-            }else{
-                return nil
-            }
-        }
-        set {
-            for index in cards.indices{
-                if index != newValue {
-                    cards[index].isFaceUP = false
-                }  else{
-                    cards[index].isFaceUP = true
-                }
-            }
-        }
-    }
+         // build up an array that has all the faceUp Card indecies in it and return index of the card that's isFaceUP
+        get { cards.indices.filter({ cards[$0].isFaceUP }).oneAndOnly }
+        set { cards.indices.forEach{cards[$0].isFaceUP = ($0 == newValue) } } }
+    
     
    mutating func choose(_ card: Card){
        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id }),
@@ -69,7 +54,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     // we can put card s truct outside MemoryGame put we specify that card is linked to the MemoryGame
     struct Card: Identifiable {
-        var isFaceUP: Bool = false
+        var isFaceUP: Bool = true
         var isMatched: Bool = false
         var content: CardContent
         var id: Int
@@ -78,7 +63,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 
 
 extension Array{
-    // this should return what's in the array if it's the onlyOne thing in the Array
+    // this should return what's in the array if it's one and onlyOne in the Array
     var oneAndOnly: Element?{
         if self.count == 1 {
             return self.first
