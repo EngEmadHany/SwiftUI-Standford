@@ -15,8 +15,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         get {// build up an array that has all the faceUp Card indecies in it
             let faceUpCardIndices = cards.indices.filter({ index in cards[index].isFaceUP })
             
-            if faceUpCardIndeces.count == 1{
-                return faceUpCardIndeces.first
+            if faceUpCardIndices.count == 1{
+                return faceUpCardIndices.first
             }else{
                 return nil
             }
@@ -37,7 +37,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
           !cards[chosenIndex].isFaceUP,
           !cards[chosenIndex].isMatched
        {
-        print("checkpoint 1")
+        
            if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
                
                if cards[chosenIndex].content == cards[potentialMatchIndex].content {
@@ -48,11 +48,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                cards[chosenIndex].isFaceUP = true
            } else {
                
-               
-               
-               
+            indexOfTheOneAndOnlyFaceUpCard = chosenIndex
            }
-           cards[chosenIndex].isFaceUP.toggle()
        }
     }
     
@@ -77,4 +74,17 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         var content: CardContent
         var id: Int
     }
+}
+
+
+extension Array{
+    // this should return what's in the array if it's the onlyOne thing in the Array
+    var oneAndOnly: Element?{
+        if self.count == 1 {
+            return self.first
+        }else{
+            return nil
+        }
+    }
+    
 }
