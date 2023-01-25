@@ -54,7 +54,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     // we can put card s truct outside MemoryGame put we specify that card is linked to the MemoryGame
     struct Card: Identifiable {
-        var isFaceUP: Bool = true
+        var isFaceUP: Bool = false
         var isMatched: Bool = false
         var content: CardContent
         var id: Int
