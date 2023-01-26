@@ -21,7 +21,9 @@ struct EmojiMemoryGameView: View {
         AspectVGrid(items: game.cards, aspectRatio: 2/3, content: { card in
             
             if card.isMatched && !card.isFaceUP {
-                
+                CardView(card: card)
+                    .opacity(0)
+                    
             } else {
                 CardView(card: card)
                     .padding(4)
@@ -45,21 +47,15 @@ struct CardView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack{
-                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
-                if card.isFaceUP {
-                    shape.fill().foregroundColor(.white)
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
-                    Pie(startingAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 115-90),clockWise: true)
-                        .padding(7).opacity(0.5)
-                    Text(card.content)
-                        .font(font(in: geometry.size))
+                Pie(startingAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 115-90),clockWise: true)
+                    .padding(7).opacity(0.5)
+                Text(card.content)
                     
-                }  else if card.isMatched {
-                    shape.opacity(0)
-                }else {
-                    shape.fill().foregroundColor(.orange)
-                }
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(Animation.linear(duration: 6).repeatForever(autoreverses: false))
+                    .font(font(in: geometry.size))
             }
+            .cardify(isFaceUp: card.isFaceUP)
         }
     }
     
